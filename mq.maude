@@ -1,0 +1,16 @@
+fmod MESSAGEQUEUE is
+    including TASK .
+    sort MessageQueue .
+    op empty : -> MessageQueue [ctor] .
+    op _|_ : Task MessageQueue -> MessageQueue [ctor] .
+    op enmq : MessageQueue Task -> MessageQueue .
+    op demq : MessageQueue -> MessageQueue .
+    var Q : MessageQueue .
+    vars X Y : Task .
+
+    eq enmq(empty,X) = X | empty .
+    eq enmq(Y | Q,X) = Y | enmq(Q,X) .
+    eq demq(empty) = empty .
+    eq demq(X | Q) = Q .
+endfm
+

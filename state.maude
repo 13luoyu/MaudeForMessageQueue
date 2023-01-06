@@ -1,0 +1,5 @@
+fmod STATE is
+    sort State .
+    ops out inn finish : -> State [ctor] .
+endfm
+

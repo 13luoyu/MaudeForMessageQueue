@@ -1,0 +1,5 @@
+fmod TASK is
+    sort Task .
+    ops t1 t2 : -> Task [ctor] .
+endfm
+

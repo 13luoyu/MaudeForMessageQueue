@@ -1,0 +1,25 @@
+mod PRIORITYOPERATION is
+    including STATE .
+    including PRIORITYMESSAGEQUEUE .
+    sort ConfigUnit Config .
+    subsort ConfigUnit < Config .
+    op __ : Config Config -> Config [ctor assoc comm] .
+    op pc[_]:_ : PriorityTask State -> ConfigUnit [ctor] .
+    op queue:_ : PriorityMessageQueue -> ConfigUnit [ctor] .
+    op ic : -> Config .
+    eq ic = (pc[t1 & 1]: out) (pc[t2 & 2]: out) (queue: empty) .
+
+    var T : Task .
+    var MQ : PriorityMessageQueue .
+    var i : Nat .
+
+    --- 任务被添加
+    rl [inq] : (pc[T & i]: out) (queue: MQ) => (pc[T & i]: inn) (queue: enmq(MQ,T & i)) .
+    --- 任务被消费
+    rl [outq] : (pc[T & i]: inn) (queue: (T & i | MQ)) => (pc[T & i]: finish) (queue: demq(T & i | MQ)) .
+
+endm
+
+
+--- search ic =>* (pc[I:PriorityTask]: out) (pc[J:PriorityTask]: out) C:Config .
+--- show path 9 .

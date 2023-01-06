@@ -1,0 +1,18 @@
+fmod PRIORITYMESSAGEQUEUE is
+    including PRIORITYTASK .
+    sort PriorityMessageQueue .
+    op empty : -> PriorityMessageQueue [ctor] .
+    op _|_ : PriorityTask PriorityMessageQueue -> PriorityMessageQueue [ctor] .
+    op enmq : PriorityMessageQueue PriorityTask -> PriorityMessageQueue .
+    op demq : PriorityMessageQueue -> PriorityMessageQueue .
+    var Q : PriorityMessageQueue .
+    vars X Y : Task .
+    vars a b : Nat .
+
+    eq enmq(empty,X & a) = (X & a | empty) .
+    ceq enmq(Y & b | Q,X & a) = Y & b | enmq(Q,X & a) if b > a or b == a .
+    ceq enmq(Y & b | Q,X & a) = X & a | enmq(Q,Y & b) if b < a .
+    eq demq(empty) = empty .
+    eq demq(X & a | Q) = Q . 
+endfm
+

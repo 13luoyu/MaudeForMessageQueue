@@ -1,0 +1,7 @@
+fmod PRIORITYTASK is
+    including NAT .
+    including TASK .
+    sort PriorityTask .
+    op _&_ : Task Nat -> PriorityTask [ctor] .
+endfm
+

@@ -1,0 +1,24 @@
+mod OPERATION is
+    including STATE .
+    including MESSAGEQUEUE .
+    sort ConfigUnit Config .
+    subsort ConfigUnit < Config .
+    op __ : Config Config -> Config [ctor assoc comm] .
+    op pc[_]:_ : Task State -> ConfigUnit [ctor] .
+    op queue:_ : MessageQueue -> ConfigUnit [ctor] .
+    op ic : -> Config .
+    eq ic = (pc[t1]: out) (pc[t2]: out) (queue: empty) .
+
+    var T : Task .
+    var MQ : MessageQueue .
+
+    --- 任务被添加
+    rl [inq] : (pc[T]: out) (queue: MQ) => (pc[T]: inn) (queue: enmq(MQ,T)) .
+    --- 任务被消费
+    rl [outq] : (pc[T]: inn) (queue: (T | MQ)) => (pc[T]: finish) (queue: demq(T | MQ)) .
+
+endm
+
+
+--- search ic =>* (pc[I:Task]: out) (pc[J:Task]: out) C:Config .
+--- show path 9 .
